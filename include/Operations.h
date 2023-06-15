@@ -10,6 +10,8 @@ class Operations
 public:
     cimg_library::CImg<unsigned char> rotate(
         cimg_library::CImg<unsigned char> &);
+    cimg_library::CImg<unsigned char> RGB2grayscale(
+        cimg_library::CImg<unsigned char> &);
     void display_image(cimg_library::CImg<unsigned char> &);
 };
 
@@ -28,6 +30,23 @@ cimg_library::CImg<unsigned char> Operations::rotate(
             new_img(rot_col, rot_row, 0, 0) = img(col, row, 0, 0);
             new_img(rot_col, rot_row, 0, 1) = img(col, row, 0, 1);
             new_img(rot_col, rot_row, 0, 2) = img(col, row, 0, 2);
+        }
+    }
+    return new_img;
+}
+
+cimg_library::CImg<unsigned char> Operations::RGB2grayscale(
+    cimg_library::CImg<unsigned char> &img)
+{
+    cimg_library::CImg<unsigned char> new_img(img.width(),
+                                              img.height(), 1, 1);
+    int g_value;
+    for (int row = 0; row < img.width(); row++)
+    {
+        for (int col = 0; col < img.height(); col++)
+        {
+            g_value = (img(row, col, 0, 0) + img(row, col, 0, 1) + img(row, col, 0, 2))/3;
+            new_img(row, col, 0, 0) = g_value;
         }
     }
     return new_img;

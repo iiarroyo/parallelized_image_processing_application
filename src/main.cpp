@@ -7,10 +7,10 @@ using namespace std;
 
 int main()
 {
-    cimg_library::CImg<unsigned char> img("../images/person2.jpg");
+    cimg_library::CImg<unsigned char> img("../images/cat.jpg");
     Operations op;
-    img = op.rotate(img);
-    op.display_image(img);
+    img = op.RGB2grayscale(img);
+    // op.display_image(img);
 
     return 0;
 }
