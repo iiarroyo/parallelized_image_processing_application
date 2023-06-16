@@ -12,6 +12,7 @@ public:
         cimg_library::CImg<unsigned char> &);
     cimg_library::CImg<unsigned char> RGB2grayscale(
         cimg_library::CImg<unsigned char> &);
+    std::vector<int> create_kernel(int);
     void display_image(cimg_library::CImg<unsigned char> &);
 };
 
@@ -19,7 +20,7 @@ cimg_library::CImg<unsigned char> Operations::rotate(
     cimg_library::CImg<unsigned char> &img)
 {
     cimg_library::CImg<unsigned char> new_img(img.height(),
-                                              img.width(), 1, 3);
+                                              img.width(), 1, img.spectrum());
 
     for (int row = 0; row < img.height(); row++)
     {
@@ -27,9 +28,8 @@ cimg_library::CImg<unsigned char> Operations::rotate(
         {
             int rot_col = new_img.width() - 1 - row;
             int rot_row = col;
-            new_img(rot_col, rot_row, 0, 0) = img(col, row, 0, 0);
-            new_img(rot_col, rot_row, 0, 1) = img(col, row, 0, 1);
-            new_img(rot_col, rot_row, 0, 2) = img(col, row, 0, 2);
+            for (int dimension = 0; dimension < img.spectrum(); dimension++)
+                new_img(rot_col, rot_row, 0, dimension) = img(col, row, 0, dimension);
         }
     }
     return new_img;
@@ -45,11 +45,16 @@ cimg_library::CImg<unsigned char> Operations::RGB2grayscale(
     {
         for (int col = 0; col < img.height(); col++)
         {
-            g_value = (img(row, col, 0, 0) + img(row, col, 0, 1) + img(row, col, 0, 2))/3;
+            g_value = (img(row, col, 0, 0) + img(row, col, 0, 1) + img(row, col, 0, 2)) / 3;
             new_img(row, col, 0, 0) = g_value;
         }
     }
     return new_img;
+}
+
+std::vector<int> Operations::create_kernel(int l)
+{
+    
 }
 void Operations::display_image(cimg_library::CImg<unsigned char> &img)
 {
